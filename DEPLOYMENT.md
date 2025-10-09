@@ -36,20 +36,25 @@ This guide covers how to deploy the Mastra Visual Builder to various platforms.
    - Click "Upload assets"
    - Upload the `dist` folder contents
 
-### Option 3: Wrangler CLI (Not Recommended for Static Sites)
+### Option 3: Wrangler CLI
 
-If you must use Wrangler CLI, use the Pages command:
+You can also deploy using the Wrangler CLI:
 
 ```bash
-# Install Wrangler
+# Install Wrangler (if not already installed)
 npm install -g wrangler
 
 # Login to Cloudflare
 wrangler login
 
-# Deploy to Pages (not Workers)
+# Deploy to Cloudflare Pages
 wrangler pages deploy dist --project-name mastra-agent-builder
+
+# For subsequent deployments
+wrangler pages deploy dist
 ```
+
+**Note:** Make sure you've built the project first with `pnpm build` before deploying.
 
 ## 🌐 Vercel
 

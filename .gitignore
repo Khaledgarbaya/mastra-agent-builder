@@ -42,3 +42,7 @@ lerna-debug.log*
 # Misc
 .cache
 .turbo
+
+# Wrangler
+.wrangler
+wrangler.toml

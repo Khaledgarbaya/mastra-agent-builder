@@ -13,6 +13,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     chunkSizeWarningLimit: 1000,
+    copyPublicDir: true,
     rollupOptions: {
       output: {
         manualChunks: {

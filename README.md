@@ -426,23 +426,49 @@ Projects auto-save every 30 seconds to browser storage.
 
 ### Cloudflare Pages (Recommended)
 
+#### Option 1: Git Integration (Recommended)
+
 1. **Connect your repository to Cloudflare Pages:**
    - Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
-   - Navigate to Pages → Create a project
-   - Connect your Git repository
+   - Navigate to **Workers & Pages** → **Create application** → **Pages**
+   - Click **Connect to Git**
+   - Select your repository
 
 2. **Configure build settings:**
    - **Framework preset**: Vite
    - **Build command**: `pnpm build`
    - **Build output directory**: `dist`
+   - **Root directory**: `/` (leave empty or default)
 
 3. **Deploy:**
-   - Cloudflare will automatically build and deploy on every push
+   - Click **Save and Deploy**
+   - Cloudflare will automatically build and deploy on every push to your main branch
+
+#### Option 2: Direct Upload
+
+1. **Build locally:**
+   ```bash
+   pnpm build
+   ```
+
+2. **Upload to Cloudflare Pages:**
+   - Go to **Workers & Pages** → **Create application** → **Pages** → **Upload assets**
+   - Upload the entire `dist` folder
+
+#### Option 3: Wrangler CLI
+
+```bash
+# Build the project
+pnpm build
+
+# Deploy using Wrangler
+npx wrangler pages deploy dist --project-name mastra-agent-builder
+```
 
 ### Other Platforms
 
-- **Vercel**: Connect repository, use Vite preset
-- **Netlify**: Connect repository, build command: `pnpm build`, publish directory: `dist`
+- **Vercel**: Connect repository, use Vite preset, build: `pnpm build`, output: `dist`
+- **Netlify**: Connect repository, build: `pnpm build`, publish: `dist`
 - **Docker**: See `DEPLOYMENT.md` for Docker configuration
 
 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
