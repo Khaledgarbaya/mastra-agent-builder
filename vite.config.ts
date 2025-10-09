@@ -12,6 +12,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -31,6 +32,26 @@ export default defineConfig({
             '@radix-ui/react-switch',
             '@radix-ui/react-tabs',
             '@radix-ui/react-tooltip',
+          ],
+          'ui-components': [
+            'lucide-react',
+            'framer-motion',
+            'sonner',
+            'class-variance-authority',
+            'clsx',
+            'tailwind-merge',
+            'tailwindcss-animate',
+          ],
+          'code-editor': [
+            '@uiw/react-codemirror',
+            '@uiw/codemirror-theme-dracula',
+            'react-syntax-highlighter',
+          ],
+          'utils': [
+            'jszip',
+            'zod',
+            'zustand',
+            'react-hook-form',
           ],
         },
       },

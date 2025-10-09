@@ -422,6 +422,31 @@ Projects auto-save every 30 seconds to browser storage.
 - Automatic recovery on reload
 - Manual save always available
 
+## 🚢 Deployment
+
+### Cloudflare Pages (Recommended)
+
+1. **Connect your repository to Cloudflare Pages:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
+   - Navigate to Pages → Create a project
+   - Connect your Git repository
+
+2. **Configure build settings:**
+   - **Framework preset**: Vite
+   - **Build command**: `pnpm build`
+   - **Build output directory**: `dist`
+
+3. **Deploy:**
+   - Cloudflare will automatically build and deploy on every push
+
+### Other Platforms
+
+- **Vercel**: Connect repository, use Vite preset
+- **Netlify**: Connect repository, build command: `pnpm build`, publish directory: `dist`
+- **Docker**: See `DEPLOYMENT.md` for Docker configuration
+
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## 🚢 Export & Deployment
 
 ### Generated Project Structure

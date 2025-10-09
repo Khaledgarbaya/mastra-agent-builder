@@ -1,0 +1,9 @@
+name = "mastra-agent-builder"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "mastra-agent-builder"
+
+# For static site deployment to Cloudflare Pages
+# This file is mainly for configuration reference
+# The actual deployment should be done through Cloudflare Pages dashboard
