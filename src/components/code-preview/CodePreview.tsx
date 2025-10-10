@@ -454,6 +454,5 @@ const workflowResult = await workflow.execute({ /* input */ });
 ## Learn More
 
 - [Mastra Documentation](https://mastra.ai/docs)
-- [Visual Builder Guide](https://mastra.ai/docs/visual-builder)
 `;
 }
