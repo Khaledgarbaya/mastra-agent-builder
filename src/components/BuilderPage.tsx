@@ -113,13 +113,6 @@ export function BuilderPage() {
         <>
           <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setShowCodePreview(false)} />
           <div className="fixed top-0 right-0 bottom-0 w-1/2 bg-card border-l border-border z-50 shadow-2xl">
-            <button
-              onClick={() => setShowCodePreview(false)}
-              className="absolute top-4 right-4 p-2 hover:bg-accent rounded-md z-10"
-              aria-label="Close"
-            >
-              <X className="h-4 w-4" />
-            </button>
             <CodePreview />
           </div>
         </>
