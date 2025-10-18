@@ -20,8 +20,8 @@ export function RouterNode({ data, selected }: NodeProps) {
   const statusConfig = {
     complete: {
       icon: CheckCircle2,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: 'text-primary',
+      bg: 'bg-primary/10',
       tooltip: 'All routes configured',
     },
     incomplete: {

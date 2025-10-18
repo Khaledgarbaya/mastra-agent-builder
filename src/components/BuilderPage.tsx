@@ -123,7 +123,7 @@ export function BuilderPage() {
         <Portal>
           <div className="fixed inset-0 bg-black/50 z-[99999]" onClick={toggleSaveDialog} />
           <div
-            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] max-h-[80vh] overflow-y-auto bg-card border border-border rounded-lg z-[99999] shadow-2xl dark:bg-card dark:border-border"
+            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] max-h-[80vh] overflow-y-auto bg-card border border-border rounded-lg z-[99999] shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="p-6">
@@ -144,7 +144,7 @@ export function BuilderPage() {
         <Portal>
           <div className="fixed inset-0 bg-black/50 z-[99999]" onClick={toggleImportDialog} />
           <div
-            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-1/2 max-h-[80vh] overflow-y-auto bg-card border border-border rounded-lg z-[99999] shadow-2xl dark:bg-card dark:border-border"
+            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-1/2 max-h-[80vh] overflow-y-auto bg-card border border-border rounded-lg z-[99999] shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="p-6">
@@ -168,7 +168,7 @@ export function BuilderPage() {
         <Portal>
           <div className="fixed inset-0 bg-black/50 z-[99999]" onClick={toggleTemplateLibrary} />
           <div
-            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-card border border-border rounded-lg z-[99999] shadow-2xl dark:bg-card dark:border-border"
+            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-card border border-border rounded-lg z-[99999] shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <TemplateLibrary
@@ -186,7 +186,7 @@ export function BuilderPage() {
         <Portal>
           <div className="fixed inset-0 bg-black/50 z-[99999]" onClick={() => setShowValidation(false)} />
           <div
-            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[700px] h-[600px] bg-card border border-border rounded-lg z-[99999] shadow-2xl dark:bg-card dark:border-border"
+            className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[700px] h-[600px] bg-card border border-border rounded-lg z-[99999] shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
             <ValidationPanel onClose={() => setShowValidation(false)} />

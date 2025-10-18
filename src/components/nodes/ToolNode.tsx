@@ -18,8 +18,8 @@ export function ToolNode({ data, selected }: NodeProps) {
   const statusConfig = {
     complete: {
       icon: CheckCircle2,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: 'text-primary',
+      bg: 'bg-primary/10',
       tooltip: 'Fully configured',
     },
     incomplete: {
@@ -81,7 +81,7 @@ export function ToolNode({ data, selected }: NodeProps) {
         {tool.execute && (
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground">Execute</span>
-            <span className="font-medium text-green-600">✓ Configured</span>
+            <span className="font-medium text-primary">✓ Configured</span>
           </div>
         )}
       </div>

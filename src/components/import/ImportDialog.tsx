@@ -147,9 +147,9 @@ export function ImportDialog({ onClose }: ImportDialogProps) {
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-          <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-          <div className="flex-1 text-sm text-red-600 dark:text-red-400">{error}</div>
+        <div className="flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+          <AlertCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+          <div className="flex-1 text-sm text-destructive">{error}</div>
         </div>
       )}
 
@@ -225,8 +225,8 @@ export function ImportDialog({ onClose }: ImportDialogProps) {
             {isLoading ? 'Importing...' : 'Import from GitHub'}
           </button>
 
-          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-            <p className="text-sm text-blue-600 dark:text-blue-400">
+          <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
+            <p className="text-sm text-primary">
               💡 <strong>Coming Soon:</strong> Direct GitHub import will fetch and parse files automatically.
             </p>
           </div>
@@ -260,8 +260,8 @@ export function ImportDialog({ onClose }: ImportDialogProps) {
             </button>
           </div>
 
-          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-            <p className="text-sm text-blue-600 dark:text-blue-400">
+          <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
+            <p className="text-sm text-primary">
               💡 <strong>Coming Soon:</strong> Click a template to add it to your canvas.
             </p>
           </div>

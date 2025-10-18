@@ -47,7 +47,7 @@ export function StepConfigPanel({ nodeId }: StepConfigPanelProps) {
             value={formData.id}
             onChange={e => handleChange('id', e.target.value)}
             placeholder="e.g., process-data"
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono text-foreground placeholder:text-muted-foreground"
           />
         </div>
 
@@ -58,7 +58,7 @@ export function StepConfigPanel({ nodeId }: StepConfigPanelProps) {
             onChange={e => handleChange('description', e.target.value)}
             placeholder="What does this step do?"
             rows={2}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground placeholder:text-muted-foreground"
           />
         </div>
 
@@ -68,7 +68,7 @@ export function StepConfigPanel({ nodeId }: StepConfigPanelProps) {
             value={formData.executeCode}
             onChange={e => handleChange('executeCode', e.target.value)}
             rows={12}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none font-mono"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none font-mono"
           />
           <p className="text-xs text-muted-foreground mt-1">TypeScript/JavaScript code for this step</p>
         </div>

@@ -200,7 +200,7 @@ export function ExportDialog({ files, projectName = 'mastra-project', onClose, o
               exportFormat === 'clipboard' ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50'
             }`}
           >
-            {copied ? <Check className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5 text-foreground" />}
+            {copied ? <Check className="h-5 w-5 text-primary" /> : <Copy className="h-5 w-5 text-foreground" />}
             <span className="text-xs font-medium text-foreground">Clipboard</span>
             <span className="text-xs text-muted-foreground text-center">Copy all files</span>
           </button>

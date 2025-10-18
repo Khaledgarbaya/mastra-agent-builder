@@ -29,15 +29,15 @@ function Toast({ toast, onClose }: ToastProps) {
   }, [toast, onClose]);
 
   const icons = {
-    success: <CheckCircle2 className="h-5 w-5 text-green-500" />,
-    error: <XCircle className="h-5 w-5 text-red-500" />,
+    success: <CheckCircle2 className="h-5 w-5 text-primary" />,
+    error: <XCircle className="h-5 w-5 text-destructive" />,
     warning: <AlertCircle className="h-5 w-5 text-yellow-500" />,
     info: <Info className="h-5 w-5 text-blue-500" />,
   };
 
   const colors = {
-    success: 'bg-green-500/10 border-green-500/20',
-    error: 'bg-red-500/10 border-red-500/20',
+    success: 'bg-primary/10 border-primary/20',
+    error: 'bg-destructive/10 border-destructive/20',
     warning: 'bg-yellow-500/10 border-yellow-500/20',
     info: 'bg-blue-500/10 border-blue-500/20',
   };

@@ -113,14 +113,14 @@ export function BuilderToolbar({
               onChange={e => setEditedName(e.target.value)}
               onKeyDown={handleKeyDown}
               onBlur={handleSaveName}
-              className="px-2 py-1 text-lg font-semibold bg-background border border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+              className="px-2 py-1 text-lg font-semibold bg-input border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
               style={{ width: `${Math.max(editedName.length * 10, 150)}px` }}
             />
             <button onClick={handleSaveName} className="p-1 hover:bg-accent rounded-md" title="Save (Enter)">
-              <Check className="h-4 w-4 text-green-500" />
+              <Check className="h-4 w-4 text-primary" />
             </button>
             <button onClick={handleCancelEdit} className="p-1 hover:bg-accent rounded-md" title="Cancel (Esc)">
-              <X className="h-4 w-4 text-red-500" />
+              <X className="h-4 w-4 text-destructive" />
             </button>
           </div>
         ) : (

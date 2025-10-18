@@ -37,7 +37,7 @@ const nodeCategories = {
       label: 'Agent',
       icon: <Bot className="h-4 w-4" />,
       description: 'AI agent that can reason and use tools',
-      color: 'bg-blue-500',
+      color: 'bg-primary',
     },
   ],
   Steps: [
@@ -46,14 +46,14 @@ const nodeCategories = {
       label: 'Step',
       icon: <Settings className="h-4 w-4" />,
       description: 'Execute custom logic',
-      color: 'bg-purple-500',
+      color: 'bg-secondary',
     },
     {
       type: 'map',
       label: 'Map',
       icon: <ArrowRightLeft className="h-4 w-4" />,
       description: 'Transform and map data',
-      color: 'bg-emerald-500',
+      color: 'bg-accent',
     },
   ],
   'Control Flow': [
@@ -62,28 +62,28 @@ const nodeCategories = {
       label: 'Loop',
       icon: <GitBranch className="h-4 w-4" />,
       description: 'While, until, dowhile, dountil',
-      color: 'bg-amber-500',
+      color: 'bg-destructive',
     },
     {
       type: 'foreach',
       label: 'For Each',
       icon: <ListOrdered className="h-4 w-4" />,
       description: 'Iterate over array items',
-      color: 'bg-teal-500',
+      color: 'bg-muted',
     },
     {
       type: 'parallel',
       label: 'Parallel',
       icon: <GitBranch className="h-4 w-4" />,
       description: 'Execute branches in parallel',
-      color: 'bg-indigo-500',
+      color: 'bg-primary/80',
     },
     {
       type: 'router',
       label: 'Branch',
       icon: <GitMerge className="h-4 w-4" />,
       description: 'Conditional branching',
-      color: 'bg-pink-500',
+      color: 'bg-secondary/80',
     },
   ],
   Timing: [
@@ -92,21 +92,21 @@ const nodeCategories = {
       label: 'Sleep',
       icon: <Clock className="h-4 w-4" />,
       description: 'Pause for duration',
-      color: 'bg-cyan-500',
+      color: 'bg-accent/80',
     },
     {
       type: 'sleepuntil',
       label: 'Sleep Until',
       icon: <Calendar className="h-4 w-4" />,
       description: 'Pause until specific time',
-      color: 'bg-sky-500',
+      color: 'bg-destructive/80',
     },
     {
       type: 'waitforevent',
       label: 'Wait For Event',
       icon: <Radio className="h-4 w-4" />,
       description: 'Wait for external event',
-      color: 'bg-violet-500',
+      color: 'bg-muted/80',
     },
   ],
   Tools: [
@@ -115,7 +115,7 @@ const nodeCategories = {
       label: 'Tool',
       icon: <Wrench className="h-4 w-4" />,
       description: 'Reusable tool for agents to execute',
-      color: 'bg-green-500',
+      color: 'bg-primary/60',
     },
   ],
 };
@@ -411,8 +411,8 @@ function NodePaletteItem({
       )}
     >
       <div className="flex items-center gap-2 mb-1">
-        <div className={cn('p-1.5 rounded-md', `${item.color}/10`)}>
-          <div className={cn('text-current', item.color.replace('bg-', 'text-'))}>{item.icon}</div>
+        <div className={cn('p-1.5 rounded-md', item.color)}>
+          <div className={cn('text-muted-foreground')}>{item.icon}</div>
         </div>
         <div className="font-medium text-sm flex-1 text-foreground">{item.label}</div>
         {onToggleFavorite && (
@@ -420,7 +420,7 @@ function NodePaletteItem({
             onClick={onToggleFavorite}
             className={cn(
               'p-1 rounded hover:bg-accent transition-colors opacity-0 group-hover:opacity-100',
-              isFavorite ? 'text-yellow-500 opacity-100' : 'text-muted-foreground',
+              isFavorite ? 'text-primary opacity-100' : 'text-muted-foreground',
             )}
             aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >

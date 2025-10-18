@@ -137,14 +137,17 @@ export function SaveLoadDialog({ onClose }: SaveLoadDialogProps) {
                     A project is already saved in browser storage. Saving will overwrite it.
                   </div>
                   {!showConfirm ? (
-                    <button onClick={() => setShowConfirm(true)} className="mt-2 text-xs text-red-500 hover:underline">
+                    <button
+                      onClick={() => setShowConfirm(true)}
+                      className="mt-2 text-xs text-destructive hover:underline"
+                    >
                       Clear saved project
                     </button>
                   ) : (
                     <div className="mt-2 flex items-center gap-2">
                       <button
                         onClick={handleClearStorage}
-                        className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        className="text-xs px-2 py-1 bg-destructive text-destructive-foreground rounded hover:bg-destructive/90"
                       >
                         Confirm Clear
                       </button>
@@ -216,9 +219,9 @@ export function SaveLoadDialog({ onClose }: SaveLoadDialogProps) {
           />
 
           {hasSaved && (
-            <div className="mt-6 p-3 border border-green-500/20 rounded-lg bg-green-500/5">
-              <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
+            <div className="mt-6 p-3 border border-primary/20 rounded-lg bg-primary/5">
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <div className="h-2 w-2 rounded-full bg-primary" />
                 Saved project available in browser storage
               </div>
             </div>

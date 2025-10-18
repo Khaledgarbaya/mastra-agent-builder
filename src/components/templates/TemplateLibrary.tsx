@@ -105,12 +105,12 @@ export function TemplateLibrary({ onApplyTemplate, onClose }: TemplateLibraryPro
   };
 
   return (
-    <div className="h-full flex flex-col bg-card dark:bg-card">
+    <div className="h-full flex flex-col bg-card">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border dark:border-border">
+      <div className="flex items-center justify-between p-4 border-b border-border">
         <div>
-          <h2 className="text-lg font-semibold text-foreground dark:text-foreground">Template Library</h2>
-          <p className="text-sm text-muted-foreground dark:text-muted-foreground">Choose from pre-built templates</p>
+          <h2 className="text-lg font-semibold text-foreground">Template Library</h2>
+          <p className="text-sm text-muted-foreground">Choose from pre-built templates</p>
         </div>
         {onClose && (
           <button onClick={onClose} className="p-2 hover:bg-accent rounded-md" aria-label="Close">
@@ -120,7 +120,7 @@ export function TemplateLibrary({ onApplyTemplate, onClose }: TemplateLibraryPro
       </div>
 
       {/* Search and Filters */}
-      <div className="p-4 space-y-4 border-b border-border dark:border-border">
+      <div className="p-4 space-y-4 border-b border-border">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -227,8 +227,8 @@ export function TemplateLibrary({ onApplyTemplate, onClose }: TemplateLibraryPro
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-border bg-secondary/20 dark:border-border dark:bg-secondary/20">
-        <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
+      <div className="p-4 border-t border-border bg-secondary/20">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>
             {filteredTemplates.length} template{filteredTemplates.length !== 1 ? 's' : ''} available
           </span>

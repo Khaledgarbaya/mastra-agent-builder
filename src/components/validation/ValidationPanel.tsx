@@ -60,12 +60,12 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
         <div className="flex items-center gap-3">
           {isValid ? (
             <>
-              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              <CheckCircle2 className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium">All validations passed!</span>
             </>
           ) : (
             <>
-              <AlertCircle className="h-5 w-5 text-red-500" />
+              <AlertCircle className="h-5 w-5 text-destructive" />
               <span className="text-sm font-medium">Issues found</span>
             </>
           )}
@@ -73,7 +73,7 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
 
         <div className="grid grid-cols-3 gap-2">
           <div className="flex items-center gap-2 text-sm">
-            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertCircle className="h-4 w-4 text-destructive" />
             <span className="text-muted-foreground">{errorsBySeverity.error.length} Errors</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
@@ -81,7 +81,7 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
             <span className="text-muted-foreground">{errorsBySeverity.warning.length} Warnings</span>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <Info className="h-4 w-4 text-blue-500" />
+            <Info className="h-4 w-4 text-primary" />
             <span className="text-muted-foreground">{errorsBySeverity.info.length} Info</span>
           </div>
         </div>
@@ -91,7 +91,7 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
       <div className="flex-1 overflow-y-auto">
         {totalIssues === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-            <CheckCircle2 className="h-12 w-12 mb-4 text-green-500/50" />
+            <CheckCircle2 className="h-12 w-12 mb-4 text-primary/50" />
             <p className="text-lg font-medium mb-2">All Clear!</p>
             <p className="text-sm text-center">No validation issues found in your project</p>
           </div>
@@ -101,7 +101,7 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
             {errorsBySeverity.error.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-red-500" />
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                   Errors ({errorsBySeverity.error.length})
                 </h3>
                 <div className="space-y-2">
@@ -131,7 +131,7 @@ export function ValidationPanel({ onClose }: ValidationPanelProps) {
             {errorsBySeverity.info.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                  <Info className="h-4 w-4 text-blue-500" />
+                  <Info className="h-4 w-4 text-primary" />
                   Info ({errorsBySeverity.info.length})
                 </h3>
                 <div className="space-y-2">
@@ -157,11 +157,11 @@ function ValidationErrorItem({ error, onClick }: ValidationErrorItemProps) {
   const getIcon = () => {
     switch (error.severity) {
       case 'error':
-        return <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />;
+        return <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />;
       case 'warning':
         return <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0" />;
       case 'info':
-        return <Info className="h-4 w-4 text-blue-500 flex-shrink-0" />;
+        return <Info className="h-4 w-4 text-primary flex-shrink-0" />;
     }
   };
 

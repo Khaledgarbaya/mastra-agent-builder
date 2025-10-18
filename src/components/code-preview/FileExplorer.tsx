@@ -113,9 +113,9 @@ export function FileExplorer({ files, selectedFile, onSelectFile }: FileExplorer
               <div className="w-3" />
             )}
             {isExpanded ? (
-              <FolderOpen className="h-3 w-3 text-blue-400" />
+              <FolderOpen className="h-3 w-3 text-primary" />
             ) : (
-              <Folder className="h-3 w-3 text-blue-400" />
+              <Folder className="h-3 w-3 text-primary" />
             )}
             <span className="text-foreground">{item.name}</span>
           </button>

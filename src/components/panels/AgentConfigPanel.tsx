@@ -101,7 +101,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
               updateStore(updated);
             }}
             placeholder="e.g., Customer Service Agent"
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
           />
         </div>
 
@@ -122,7 +122,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             value={formData.id}
             onChange={e => handleChange('id', e.target.value)}
             placeholder="e.g., customer-service-agent"
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
           />
           <p className="text-xs text-muted-foreground mt-1">Unique identifier for this agent</p>
         </div>
@@ -135,7 +135,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             onBlur={e => handleChange('description', e.target.value)}
             placeholder="What does this agent do?"
             rows={2}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground placeholder:text-muted-foreground"
           />
         </div>
       </div>
@@ -149,7 +149,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
           <select
             value={formData.model.provider}
             onChange={e => handleModelChange('provider', e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
           >
             <option value="openai">OpenAI</option>
             <option value="anthropic">Anthropic</option>
@@ -164,7 +164,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
           <select
             value={formData.model.name}
             onChange={e => handleModelChange('name', e.target.value)}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
           >
             {formData.model.provider === 'openai' && (
               <>
@@ -217,7 +217,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             onBlur={e => handleChange('instructions', e.target.value)}
             placeholder="Enter agent instructions (supports markdown)..."
             rows={8}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none font-mono"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none font-mono"
           />
           <p className="text-xs text-muted-foreground mt-1">Define how the agent should behave and respond</p>
         </div>
@@ -255,7 +255,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             {formData.tools.map((toolId, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 border border-border rounded-md bg-secondary/30"
+                className="flex items-center justify-between p-3 border border-border rounded-md bg-secondary"
               >
                 <div className="flex items-center gap-2">
                   <Wrench className="h-4 w-4 text-muted-foreground" />
@@ -307,7 +307,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             {formData.workflows.map((workflowId, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 border border-border rounded-md bg-secondary/30"
+                className="flex items-center justify-between p-3 border border-border rounded-md bg-secondary"
               >
                 <div className="flex items-center gap-2">
                   <GitBranch className="h-4 w-4 text-muted-foreground" />
@@ -339,7 +339,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
           <select
             value={formData.memory?.type || 'none'}
             onChange={e => handleChange('memory', { ...formData.memory, type: e.target.value as any })}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
           >
             <option value="none">No Memory</option>
             <option value="buffer">Buffer Memory</option>
@@ -357,7 +357,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
                 value={formData.memory?.maxMessages || 10}
                 onChange={e => handleChange('memory', { ...formData.memory, maxMessages: parseInt(e.target.value) })}
                 min={1}
-                className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+                className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
               />
               <p className="text-xs text-muted-foreground mt-1">Number of messages to keep in memory</p>
             </div>
@@ -377,7 +377,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             onChange={e => handleChange('maxRetries', parseInt(e.target.value))}
             min={0}
             max={10}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 border border-border rounded-md bg-input text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
           />
           <p className="text-xs text-muted-foreground mt-1">Number of times to retry on failure</p>
         </div>
@@ -388,7 +388,7 @@ export function AgentConfigPanel({ nodeId }: AgentConfigPanelProps) {
             id="enable-tracing"
             checked={formData.enableTracing || false}
             onChange={e => handleChange('enableTracing', e.target.checked)}
-            className="w-4 h-4 border border-border rounded focus:ring-2 focus:ring-primary"
+            className="w-4 h-4 border border-border rounded bg-input focus:ring-2 focus:ring-primary checked:bg-primary checked:text-primary-foreground"
           />
           <label htmlFor="enable-tracing" className="text-sm cursor-pointer">
             Enable tracing and observability

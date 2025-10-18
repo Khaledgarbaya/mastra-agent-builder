@@ -21,8 +21,8 @@ export function AgentNode({ data, selected }: NodeProps) {
   const statusConfig = {
     complete: {
       icon: CheckCircle2,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: 'text-primary',
+      bg: 'bg-primary/10',
       tooltip: 'Fully configured',
     },
     incomplete: {
@@ -33,8 +33,8 @@ export function AgentNode({ data, selected }: NodeProps) {
     },
     error: {
       icon: AlertCircle,
-      color: 'text-red-500',
-      bg: 'bg-red-500/10',
+      color: 'text-destructive',
+      bg: 'bg-destructive/10',
       tooltip: 'Configuration error',
     },
   };
