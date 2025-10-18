@@ -28,6 +28,9 @@ const initialState: BuilderState = {
     isImportDialogOpen: false,
     isSaveDialogOpen: false,
     isTemplateLibraryOpen: false,
+    isPreviewOpen: false,
+    previewStatus: 'idle',
+    previewLogs: [],
     leftPanelWidth: 300,
     rightPanelWidth: 400,
     zoom: 1,
@@ -455,6 +458,30 @@ export const useBuilderStore = create<BuilderStore>()(
       toggleTemplateLibrary: () => {
         set(state => ({
           ui: { ...state.ui, isTemplateLibraryOpen: !state.ui.isTemplateLibraryOpen },
+        }));
+      },
+
+      togglePreview: () => {
+        set(state => ({
+          ui: { ...state.ui, isPreviewOpen: !state.ui.isPreviewOpen },
+        }));
+      },
+
+      setPreviewStatus: (status: 'idle' | 'booting' | 'installing' | 'starting' | 'running' | 'error') => {
+        set(state => ({
+          ui: { ...state.ui, previewStatus: status },
+        }));
+      },
+
+      addPreviewLog: (log: string) => {
+        set(state => ({
+          ui: { ...state.ui, previewLogs: [...state.ui.previewLogs, log] },
+        }));
+      },
+
+      clearPreviewLogs: () => {
+        set(state => ({
+          ui: { ...state.ui, previewLogs: [] },
         }));
       },
 

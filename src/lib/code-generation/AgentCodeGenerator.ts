@@ -12,6 +12,16 @@ export class AgentCodeGenerator {
 
     // Import statements
     lines.push(`import { Agent } from '@mastra/core';`);
+    
+    // Import model from appropriate SDK based on provider
+    const provider = config.model.provider.toLowerCase();
+    if (provider === 'openai') {
+      lines.push(`import { openai } from '@ai-sdk/openai';`);
+    } else if (provider === 'anthropic') {
+      lines.push(`import { anthropic } from '@ai-sdk/anthropic';`);
+    } else if (provider === 'google') {
+      lines.push(`import { google } from '@ai-sdk/google';`);
+    }
 
     // Add tool imports if tools are attached
     if (config.tools && config.tools.length > 0) {
@@ -44,32 +54,19 @@ export class AgentCodeGenerator {
       lines.push(`  description: '${this.escapeString(config.description)}',`);
     }
 
-    // Model configuration
-    lines.push(`  model: {`);
-    lines.push(`    provider: '${config.model.provider}',`);
-    lines.push(`    name: '${config.model.name}',`);
-
-    // Model settings
-    if (config.model.temperature !== undefined) {
-      lines.push(`    temperature: ${config.model.temperature},`);
+    // Model configuration - use proper AI SDK model instance
+    const modelName = config.model.name;
+    
+    if (provider === 'openai') {
+      lines.push(`  model: openai('${modelName}'),`);
+    } else if (provider === 'anthropic') {
+      lines.push(`  model: anthropic('${modelName}'),`);
+    } else if (provider === 'google') {
+      lines.push(`  model: google('${modelName}'),`);
+    } else {
+      // Fallback to openai if unknown provider
+      lines.push(`  model: openai('gpt-4o-mini'),`);
     }
-    if (config.model.topP !== undefined) {
-      lines.push(`    topP: ${config.model.topP},`);
-    }
-    if (config.model.maxTokens !== undefined) {
-      lines.push(`    maxTokens: ${config.model.maxTokens},`);
-    }
-    if (config.model.frequencyPenalty !== undefined) {
-      lines.push(`    frequencyPenalty: ${config.model.frequencyPenalty},`);
-    }
-    if (config.model.presencePenalty !== undefined) {
-      lines.push(`    presencePenalty: ${config.model.presencePenalty},`);
-    }
-    if (config.model.stopSequences && config.model.stopSequences.length > 0) {
-      lines.push(`    stopSequences: [${config.model.stopSequences.map((s: string) => `'${s}'`).join(', ')}],`);
-    }
-
-    lines.push(`  },`);
 
     // Tools
     if (config.tools && config.tools.length > 0) {

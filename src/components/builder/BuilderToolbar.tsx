@@ -21,10 +21,12 @@ import { KeyboardShortcutsHelp } from '../KeyboardShortcutsHelp';
 export interface BuilderToolbarProps {
   onSave?: () => void;
   onTest?: () => void;
+  onPreview?: () => void;
   onOpenProjectSettings?: () => void;
   onOpenCodePreview?: () => void;
   onOpenTemplates?: () => void;
   onOpenValidation?: () => void;
+  previewStatus?: 'idle' | 'booting' | 'installing' | 'starting' | 'running' | 'error';
   className?: string;
 }
 
@@ -34,10 +36,12 @@ export interface BuilderToolbarProps {
 export function BuilderToolbar({
   onSave,
   onTest,
+  onPreview,
   onOpenProjectSettings,
   onOpenCodePreview,
   onOpenTemplates,
   onOpenValidation,
+  previewStatus = 'idle',
   className,
 }: BuilderToolbarProps) {
   const {
@@ -157,6 +161,40 @@ export function BuilderToolbar({
             tooltip="View Generated Code"
             icon={<Code className="h-4 w-4" />}
           />
+        )}
+
+        <div className="mx-2 h-6 w-px bg-border" />
+
+        {/* Preview */}
+        {onPreview && (
+          <button
+            onClick={onPreview}
+            disabled={!project || previewStatus === 'booting' || previewStatus === 'installing' || previewStatus === 'starting'}
+            className={cn(
+              'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              previewStatus === 'running'
+                ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                : previewStatus === 'error'
+                  ? 'bg-red-500/10 text-red-500 border border-red-500/20'
+                  : 'bg-primary/10 text-primary hover:bg-primary/20'
+            )}
+            title="Preview in WebContainer"
+          >
+            <Play className="h-4 w-4" />
+            {previewStatus === 'running' ? (
+              <>
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                Running
+              </>
+            ) : previewStatus === 'booting' || previewStatus === 'installing' || previewStatus === 'starting' ? (
+              'Starting...'
+            ) : previewStatus === 'error' ? (
+              'Error'
+            ) : (
+              'Preview'
+            )}
+          </button>
         )}
 
         {/* Test */}

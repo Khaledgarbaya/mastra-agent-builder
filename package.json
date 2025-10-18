@@ -29,6 +29,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "@uiw/codemirror-theme-dracula": "^4.23.14",
     "@uiw/react-codemirror": "^4.23.14",
+    "@webcontainer/api": "^1.6.1",
     "@xyflow/react": "^12.8.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

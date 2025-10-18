@@ -165,6 +165,9 @@ export interface BuilderUIState {
   isImportDialogOpen: boolean;
   isSaveDialogOpen: boolean;
   isTemplateLibraryOpen: boolean;
+  isPreviewOpen: boolean;
+  previewStatus: 'idle' | 'booting' | 'installing' | 'starting' | 'running' | 'error';
+  previewLogs: string[];
   leftPanelWidth: number;
   rightPanelWidth: number;
   zoom: number;
@@ -252,6 +255,10 @@ export interface BuilderActions {
   toggleImportDialog: () => void;
   toggleSaveDialog: () => void;
   toggleTemplateLibrary: () => void;
+  togglePreview: () => void;
+  setPreviewStatus: (status: 'idle' | 'booting' | 'installing' | 'starting' | 'running' | 'error') => void;
+  addPreviewLog: (log: string) => void;
+  clearPreviewLogs: () => void;
   applyTemplate: (templateProject: ProjectConfig) => void;
   setLeftPanelWidth: (width: number) => void;
   setRightPanelWidth: (width: number) => void;
