@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { BuilderLayout } from './BuilderLayout';
 import { BuilderToolbar } from './builder/BuilderToolbar';
 import { NodePalette } from './palette/NodePalette';
@@ -10,10 +10,12 @@ import { SaveLoadDialog } from './save-load';
 import { ImportDialog } from './import';
 import { TemplateLibrary } from './templates/TemplateLibrary';
 import { ValidationPanel } from './validation/ValidationPanel';
-import { ToastContainer, useToasts, Portal } from './ui';
+import { ApiKeysDialog, PreviewPanel } from './execute';
+import { ToastContainer, useToasts, Portal, showToast } from './ui';
 import { useBuilderState, useKeyboardShortcuts } from '../hooks';
 import { autoSaveProject } from '../lib/storage';
-import type { ProjectConfig } from '../types';
+import { WebContainerManager, FileSystemGenerator } from '../lib/web-container';
+import type { ProjectConfig, ApiKeysConfig } from '../types';
 import type { Template } from '../lib/templates';
 import { X } from 'lucide-react';
 
@@ -27,11 +29,19 @@ export function BuilderPage() {
     toggleImportDialog,
     toggleTemplateLibrary,
     applyTemplate,
+    togglePreview,
+    setPreviewStatus,
+    addPreviewLog,
+    clearPreviewLogs,
   } = useBuilderState();
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [showCodePreview, setShowCodePreview] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
+  const [showApiKeysDialog, setShowApiKeysDialog] = useState(false);
+  const [serverUrl, setServerUrl] = useState<string | null>(null);
   const { toasts, removeToast } = useToasts();
+  
+  const webContainerManagerRef = useRef<WebContainerManager | null>(null);
 
   // Enable keyboard shortcuts
   useKeyboardShortcuts();
@@ -74,11 +84,128 @@ export function BuilderPage() {
     }
   }, [project, setProject]);
 
+  // Initialize WebContainer manager
+  useEffect(() => {
+    if (!webContainerManagerRef.current) {
+      webContainerManagerRef.current = new WebContainerManager();
+    }
+  }, []);
+
+  // Detect required API providers from agents
+  const getRequiredProviders = (): string[] => {
+    if (!project) return [];
+    const providers = new Set<string>();
+    
+    project.nodes.forEach(node => {
+      if (node.type === 'agent') {
+        const config = (node.data as any).config;
+        if (config?.model?.provider) {
+          providers.add(config.model.provider);
+        }
+      }
+    });
+    
+    return Array.from(providers);
+  };
+
+  // Handle preview button click
+  const handlePreviewClick = () => {
+    if (!project) {
+      showToast('warning', 'Please create a project first');
+      return;
+    }
+    
+    // Show API keys dialog
+    setShowApiKeysDialog(true);
+  };
+
+  // Start preview with API keys
+  const handleStartPreview = async (apiKeys: ApiKeysConfig) => {
+    setShowApiKeysDialog(false);
+    
+    if (!project) return;
+    
+    try {
+      // Open preview panel
+      togglePreview();
+      clearPreviewLogs();
+      
+      const manager = webContainerManagerRef.current!;
+      
+      // Log callback
+      const onLog = (message: string, level: 'info' | 'warning' | 'error') => {
+        addPreviewLog(`[${level.toUpperCase()}] ${message}`);
+      };
+      
+      // Status callback
+      const onStatus = (status: 'booting' | 'installing' | 'starting' | 'running' | 'error') => {
+        setPreviewStatus(status);
+      };
+      
+      // Boot WebContainer
+      setPreviewStatus('booting');
+      await manager.boot(onLog);
+      
+      // Generate files
+      onLog('Generating project files...', 'info');
+      const fileGenerator = new FileSystemGenerator();
+      const files = fileGenerator.generateWebContainerFiles(project, apiKeys);
+      
+      // Mount files
+      await manager.mountProject(files, onLog);
+      
+      // Install dependencies
+      setPreviewStatus('installing');
+      await manager.installDependencies(onLog);
+      
+      // Start dev server
+      setPreviewStatus('starting');
+      const url = await manager.startDevServer(onLog, onStatus);
+      setServerUrl(url);
+      
+      showToast('success', 'Preview started successfully!');
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      addPreviewLog(`[ERROR] ${errorMsg}`);
+      setPreviewStatus('error');
+      showToast('error', `Preview failed: ${errorMsg}`);
+    }
+  };
+
+  // Stop preview
+  const handleStopPreview = async () => {
+    try {
+      const manager = webContainerManagerRef.current;
+      if (manager) {
+        await manager.stopDevServer((msg) => addPreviewLog(`[INFO] ${msg}`));
+        setPreviewStatus('idle');
+        setServerUrl(null);
+        showToast('info', 'Preview stopped');
+      }
+    } catch (error) {
+      console.error('Failed to stop preview:', error);
+    }
+  };
+
+  // Restart preview
+  const handleRestartPreview = async () => {
+    await handleStopPreview();
+    setShowApiKeysDialog(true);
+  };
+
+  // Close preview
+  const handleClosePreview = async () => {
+    await handleStopPreview();
+    togglePreview();
+  };
+
   return (
     <>
       <BuilderLayout
         toolbar={
           <BuilderToolbar
+            onPreview={handlePreviewClick}
+            previewStatus={ui.previewStatus}
             onOpenProjectSettings={() => setShowProjectSettings(true)}
             onOpenCodePreview={() => setShowCodePreview(true)}
             onOpenTemplates={toggleTemplateLibrary}
@@ -90,6 +217,28 @@ export function BuilderPage() {
       >
         <UnifiedCanvasWrapper />
       </BuilderLayout>
+
+      {/* API Keys Dialog */}
+      {showApiKeysDialog && (
+        <ApiKeysDialog
+          requiredProviders={getRequiredProviders()}
+          onSubmit={handleStartPreview}
+          onCancel={() => setShowApiKeysDialog(false)}
+        />
+      )}
+
+      {/* Preview Panel */}
+      {ui.isPreviewOpen && (
+        <PreviewPanel
+          status={ui.previewStatus}
+          logs={ui.previewLogs}
+          serverUrl={serverUrl}
+          onClose={handleClosePreview}
+          onRestart={handleRestartPreview}
+          onStop={handleStopPreview}
+          onClearLogs={clearPreviewLogs}
+        />
+      )}
 
       {/* Project Settings Modal */}
       {showProjectSettings && (

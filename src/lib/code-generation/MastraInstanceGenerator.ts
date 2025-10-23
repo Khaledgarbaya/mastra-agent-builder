@@ -19,8 +19,9 @@ export class MastraInstanceGenerator {
       return n.type === 'agent' && config && config.id && config.name;
     });
     if (agentNodes.length > 0) {
-      const agentImports = agentNodes.map(node => {
-        const agentId = (node.data as any).config.id;
+      // Deduplicate agent imports by ID
+      const uniqueAgentIds = [...new Set(agentNodes.map(node => (node.data as any).config.id))];
+      const agentImports = uniqueAgentIds.map(agentId => {
         return this.toCamelCase(agentId) + 'Agent';
       });
       lines.push(`import { ${agentImports.join(', ')} } from './agents';`);
@@ -41,27 +42,12 @@ export class MastraInstanceGenerator {
       return n.type === 'tool' && config && config.id && config.description;
     });
     if (toolNodes.length > 0) {
-      const toolImports = toolNodes.map(node => {
-        const toolId = (node.data as any).config.id;
+      // Deduplicate tool imports by ID
+      const uniqueToolIds = [...new Set(toolNodes.map(node => (node.data as any).config.id))];
+      const toolImports = uniqueToolIds.map(toolId => {
         return this.toCamelCase(toolId) + 'Tool';
       });
       lines.push(`import { ${toolImports.join(', ')} } from './tools';`);
-    }
-
-    // Import storage, logger if configured
-    if (project.settings?.storage?.type) {
-      const storageType = project.settings.storage.type;
-      if (storageType === 'libsql') {
-        lines.push(`import { LibSQLStore } from '@mastra/core';`);
-      } else if (storageType === 'postgres') {
-        lines.push(`import { PostgresStore } from '@mastra/core';`);
-      } else if (storageType === 'redis') {
-        lines.push(`import { RedisStore } from '@mastra/core';`);
-      }
-    }
-
-    if (project.settings?.logger?.type === 'pino') {
-      lines.push(`import { PinoLogger } from '@mastra/core';`);
     }
 
     lines.push(``);
@@ -69,11 +55,11 @@ export class MastraInstanceGenerator {
     // Create Mastra instance
     lines.push(`export const mastra = new Mastra({`);
 
-    // Add agents (already filtered above)
+    // Add agents (already filtered above, deduplicate by ID)
     if (agentNodes.length > 0) {
+      const uniqueAgentIds = [...new Set(agentNodes.map(node => (node.data as any).config.id))];
       lines.push(`  agents: {`);
-      agentNodes.forEach(node => {
-        const agentId = (node.data as any).config.id;
+      uniqueAgentIds.forEach(agentId => {
         const varName = this.toCamelCase(agentId) + 'Agent';
         lines.push(`    '${agentId}': ${varName},`);
       });
@@ -90,36 +76,24 @@ export class MastraInstanceGenerator {
       lines.push(`  },`);
     }
 
-    // Add tools (already filtered above)
+    // Add tools (already filtered above, deduplicate by ID)
     if (toolNodes.length > 0) {
+      const uniqueToolIds = [...new Set(toolNodes.map(node => (node.data as any).config.id))];
       lines.push(`  tools: {`);
-      toolNodes.forEach(node => {
-        const toolId = (node.data as any).config.id;
+      uniqueToolIds.forEach(toolId => {
         const varName = this.toCamelCase(toolId) + 'Tool';
         lines.push(`    '${toolId}': ${varName},`);
       });
       lines.push(`  },`);
     }
 
-    // Add storage
-    if (project.settings?.storage?.type && project.settings.storage.type !== 'memory') {
-      lines.push(`  storage: ${this.generateStorageConfig(project.settings.storage)},`);
-    }
-
-    // Add logger
-    if (project.settings?.logger?.type && project.settings.logger.type !== 'console') {
-      lines.push(`  logger: ${this.generateLoggerConfig(project.settings.logger)},`);
-    }
-
-    // Add telemetry
-    if (project.settings?.telemetry?.enabled) {
-      lines.push(`  telemetry: {`);
-      lines.push(`    enabled: true,`);
-      if (project.settings.telemetry.provider) {
-        lines.push(`    provider: '${project.settings.telemetry.provider}',`);
-      }
-      lines.push(`  },`);
-    }
+    // Skip storage and logger configuration for WebContainer preview
+    // These require additional setup and dependencies that may not be available
+    
+    // Add telemetry (disabled in WebContainer to avoid network errors)
+    lines.push(`  telemetry: {`);
+    lines.push(`    enabled: false,`);
+    lines.push(`  },`);
 
     lines.push(`});`);
 
@@ -134,36 +108,6 @@ export class MastraInstanceGenerator {
     // For now, return empty array - workflows will be generated separately
     // In future, analyze connected step nodes to identify workflows
     return [];
-  }
-
-  /**
-   * Generate storage configuration code
-   */
-  private generateStorageConfig(storage: { type?: string }): string {
-    switch (storage.type) {
-      case 'libsql':
-        return `new LibSQLStore({ url: process.env.LIBSQL_URL || 'file:./mastra.db' })`;
-      case 'postgres':
-        return `new PostgresStore({ connectionString: process.env.DATABASE_URL })`;
-      case 'redis':
-        return `new RedisStore({ url: process.env.REDIS_URL })`;
-      default:
-        return `undefined`;
-    }
-  }
-
-  /**
-   * Generate logger configuration code
-   */
-  private generateLoggerConfig(logger: { type?: string }): string {
-    switch (logger.type) {
-      case 'pino':
-        return `new PinoLogger({ name: 'mastra' })`;
-      case 'console':
-        return `console`;
-      default:
-        return `console`;
-    }
   }
 
   /**

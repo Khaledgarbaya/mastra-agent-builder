@@ -1,4 +1,5 @@
 import type { ToolBuilderConfig, SchemaField } from '../../types';
+import { escapeString, toCamelCase, validateExecuteCode, sanitizeCode } from './codeGenUtils';
 
 /**
  * Generates Mastra tool code from visual configuration
@@ -40,7 +41,7 @@ export class ToolCodeGenerator {
     lines.push(`  id: '${config.id}',`);
 
     if (config.description) {
-      lines.push(`  description: '${this.escapeString(config.description)}',`);
+      lines.push(`  description: '${escapeString(config.description)}',`);
     }
 
     // Add schemas
@@ -53,7 +54,21 @@ export class ToolCodeGenerator {
 
     // Add execute function
     if (config.executeCode) {
-      lines.push(`  execute: ${config.executeCode},`);
+      // Validate execute code for security
+      const validation = validateExecuteCode(config.executeCode);
+      if (!validation.isValid) {
+        // Log warning but continue with placeholder
+        console.warn(`Invalid execute code for tool ${config.id}: ${validation.error}`);
+        lines.push(`  execute: async ({ context }) => {`);
+        lines.push(`    // SECURITY WARNING: Original code failed validation`);
+        lines.push(`    // Error: ${escapeString(validation.error || 'Unknown error')}`);
+        lines.push(`    throw new Error('Tool execute code failed security validation');`);
+        lines.push(`  },`);
+      } else {
+        // Sanitize and include the code
+        const sanitized = sanitizeCode(config.executeCode);
+        lines.push(`  execute: ${sanitized},`);
+      }
     } else {
       // Default execute function
       lines.push(`  execute: async ({ context }) => {`);
@@ -76,21 +91,14 @@ export class ToolCodeGenerator {
    * Generate variable name for tool
    */
   private getToolVarName(id: string): string {
-    return this.toCamelCase(id) + 'Tool';
+    return toCamelCase(id) + 'Tool';
   }
 
   /**
    * Generate variable name for schema
    */
   private getSchemaVarName(id: string, type: 'input' | 'output'): string {
-    return this.toCamelCase(id) + type.charAt(0).toUpperCase() + type.slice(1) + 'Schema';
-  }
-
-  /**
-   * Convert kebab-case to camelCase
-   */
-  private toCamelCase(str: string): string {
-    return str.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
+    return toCamelCase(id) + type.charAt(0).toUpperCase() + type.slice(1) + 'Schema';
   }
 
   /**
@@ -135,23 +143,16 @@ export class ToolCodeGenerator {
 
     // Add description
     if (field.description) {
-      type += `.describe('${this.escapeString(field.description)}')`;
+      type += `.describe('${escapeString(field.description)}')`;
     }
 
     // Add default value
     if (field.defaultValue !== undefined && field.defaultValue !== '') {
       const defaultValue =
-        typeof field.defaultValue === 'string' ? `'${this.escapeString(field.defaultValue)}'` : field.defaultValue;
+        typeof field.defaultValue === 'string' ? `'${escapeString(field.defaultValue)}'` : field.defaultValue;
       type += `.default(${defaultValue})`;
     }
 
     return type;
-  }
-
-  /**
-   * Escape string for code generation
-   */
-  private escapeString(str: string): string {
-    return str.replace(/'/g, "\\'").replace(/\n/g, '\\n');
   }
 }
