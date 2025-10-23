@@ -12,6 +12,7 @@ const STORAGE_KEY = 'mastra-preview-api-keys';
 
 /**
  * Dialog for collecting API keys before starting preview
+ * API keys are stored in sessionStorage (cleared on tab close) for better security
  */
 export function ApiKeysDialog({ onSubmit, onCancel, requiredProviders = [] }: ApiKeysDialogProps) {
   const [apiKeys, setApiKeys] = useState<ApiKeysConfig>({
@@ -26,10 +27,10 @@ export function ApiKeysDialog({ onSubmit, onCancel, requiredProviders = [] }: Ap
   });
   const [errors, setErrors] = useState<string[]>([]);
 
-  // Load saved API keys from localStorage
+  // Load saved API keys from sessionStorage (more secure than localStorage)
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as ApiKeysConfig;
         setApiKeys(parsed);
@@ -65,9 +66,9 @@ export function ApiKeysDialog({ onSubmit, onCancel, requiredProviders = [] }: Ap
       return;
     }
 
-    // Save to localStorage
+    // Save to sessionStorage (more secure - cleared on tab close)
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(apiKeys));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(apiKeys));
     } catch (error) {
       console.error('Failed to save API keys:', error);
     }
@@ -194,8 +195,9 @@ export function ApiKeysDialog({ onSubmit, onCancel, requiredProviders = [] }: Ap
             </div>
           </div>
 
-          <div className="pt-2 text-xs text-muted-foreground">
-            <p>Your API keys are stored locally in your browser and never sent to our servers.</p>
+          <div className="pt-2 text-xs text-muted-foreground space-y-1">
+            <p>🔒 Your API keys are stored in your browser session only and never sent to our servers.</p>
+            <p>⚠️ Keys are automatically cleared when you close this tab for security.</p>
           </div>
 
           <div className="flex gap-3 pt-4">

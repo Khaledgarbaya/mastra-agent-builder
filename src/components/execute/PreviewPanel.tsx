@@ -138,7 +138,7 @@ export function PreviewPanel({
                   src={serverUrl}
                   className="w-full h-full border-0"
                   title="Mastra Playground"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+                  sandbox="allow-scripts allow-forms allow-popups allow-modals"
                 />
               ) : (
                 <div className="flex items-center justify-center h-full bg-secondary/20">

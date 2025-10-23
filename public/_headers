@@ -5,6 +5,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://cdn.jsdelivr.net https://*.webcontainer.io; img-src 'self' data: https:; font-src 'self' data:; frame-src 'self' https://*.webcontainer.io blob:; worker-src 'self' blob:;
 
 /index.html
   Cache-Control: no-cache

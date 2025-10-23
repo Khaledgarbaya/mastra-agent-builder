@@ -1,4 +1,5 @@
 import type { AgentBuilderConfig } from '../../types';
+import { escapeString, escapeBackticks, toCamelCase } from './codeGenUtils';
 
 /**
  * Generates Mastra agent code from visual configuration
@@ -26,7 +27,7 @@ export class AgentCodeGenerator {
     // Add tool imports if tools are attached
     if (config.tools && config.tools.length > 0) {
       const toolImports = config.tools.map(toolId => {
-        const varName = this.toCamelCase(toolId) + 'Tool';
+        const varName = toCamelCase(toolId) + 'Tool';
         return varName;
       });
       lines.push(`import { ${toolImports.join(', ')} } from '../tools';`);
@@ -35,7 +36,7 @@ export class AgentCodeGenerator {
     // Add workflow imports if workflows are attached
     if (config.workflows && config.workflows.length > 0) {
       const workflowImports = config.workflows.map(wfId => {
-        const varName = this.toCamelCase(wfId) + 'Workflow';
+        const varName = toCamelCase(wfId) + 'Workflow';
         return varName;
       });
       lines.push(`import { ${workflowImports.join(', ')} } from '../workflows';`);
@@ -45,13 +46,13 @@ export class AgentCodeGenerator {
 
     // Generate agent
     lines.push(`export const ${this.getAgentVarName(config.id)} = new Agent({`);
-    lines.push(`  name: '${config.name}',`);
+    lines.push(`  name: '${escapeString(config.name)}',`);
     lines.push(`  instructions: \``);
-    lines.push(this.escapeBackticks(config.instructions));
+    lines.push(escapeBackticks(config.instructions));
     lines.push(`  \`,`);
 
     if (config.description) {
-      lines.push(`  description: '${this.escapeString(config.description)}',`);
+      lines.push(`  description: '${escapeString(config.description)}',`);
     }
 
     // Model configuration - use proper AI SDK model instance
@@ -72,7 +73,7 @@ export class AgentCodeGenerator {
     if (config.tools && config.tools.length > 0) {
       lines.push(`  tools: {`);
       config.tools.forEach(toolId => {
-        const varName = this.toCamelCase(toolId) + 'Tool';
+        const varName = toCamelCase(toolId) + 'Tool';
         lines.push(`    ${varName},`);
       });
       lines.push(`  },`);
@@ -82,7 +83,7 @@ export class AgentCodeGenerator {
     if (config.workflows && config.workflows.length > 0) {
       lines.push(`  workflows: {`);
       config.workflows.forEach(wfId => {
-        const varName = this.toCamelCase(wfId) + 'Workflow';
+        const varName = toCamelCase(wfId) + 'Workflow';
         lines.push(`    ${varName},`);
       });
       lines.push(`  },`);
@@ -117,27 +118,6 @@ export class AgentCodeGenerator {
    * Generate variable name for agent
    */
   private getAgentVarName(id: string): string {
-    return this.toCamelCase(id) + 'Agent';
-  }
-
-  /**
-   * Convert kebab-case to camelCase
-   */
-  private toCamelCase(str: string): string {
-    return str.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
-  }
-
-  /**
-   * Escape string for code generation
-   */
-  private escapeString(str: string): string {
-    return str.replace(/'/g, "\\'").replace(/\n/g, '\\n');
-  }
-
-  /**
-   * Escape backticks in template literals
-   */
-  private escapeBackticks(str: string): string {
-    return str.replace(/`/g, '\\`').replace(/\${/g, '\\${');
+    return toCamelCase(id) + 'Agent';
   }
 }

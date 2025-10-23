@@ -4,6 +4,7 @@ import { AgentCodeGenerator } from '../code-generation/AgentCodeGenerator';
 import { ToolCodeGenerator } from '../code-generation/ToolCodeGenerator';
 import { StepCodeGenerator } from '../code-generation/StepCodeGenerator';
 import { MastraInstanceGenerator } from '../code-generation/MastraInstanceGenerator';
+import { toCamelCase } from '../code-generation/codeGenUtils';
 
 /**
  * Generates WebContainer-compatible file system tree from project configuration
@@ -143,7 +144,7 @@ export class FileSystemGenerator {
       // Create index.ts for agents (deduplicated)
       const agentExports = uniqueAgentIds
         .map(agentId => {
-          const varName = this.toCamelCase(agentId) + 'Agent';
+          const varName = toCamelCase(agentId) + 'Agent';
           return `export { ${varName} } from './${agentId}';`;
         })
         .join('\n');
@@ -188,7 +189,7 @@ export class FileSystemGenerator {
       // Create index.ts for tools (deduplicated)
       const toolExports = uniqueToolIds
         .map(toolId => {
-          const varName = this.toCamelCase(toolId) + 'Tool';
+          const varName = toCamelCase(toolId) + 'Tool';
           return `export { ${varName} } from './${toolId}';`;
         })
         .join('\n');
@@ -233,7 +234,7 @@ export class FileSystemGenerator {
       // Create index.ts for steps (deduplicated)
       const stepExports = uniqueStepIds
         .map(stepId => {
-          const varName = this.toCamelCase(stepId) + 'Step';
+          const varName = toCamelCase(stepId) + 'Step';
           return `export { ${varName} } from './${stepId}';`;
         })
         .join('\n');
@@ -277,13 +278,6 @@ export class FileSystemGenerator {
   private generateMastraIndex(project: ProjectConfig): string {
     const generator = new MastraInstanceGenerator();
     return generator.generate(project);
-  }
-
-  /**
-   * Convert kebab-case to camelCase
-   */
-  private toCamelCase(str: string): string {
-    return str.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
   }
 }
 
